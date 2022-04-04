@@ -100,13 +100,13 @@ const CONFIG = {
   // └─┘┴ ┴└─┘┴└─┘└─┘
 
   // General
-  name: "John",
+  name: "Mars",
   openInNewTab: true,
-  title: "Bento",
+  title: "Welcome",
 
   // Clock
-  twelveHourFormat: false,
-  flashSeparator: false,
+  twelveHourFormat: true,
+  flashSeparator: true,
   
   // Theme
   theme: "bento",
@@ -141,9 +141,9 @@ const CONFIG = {
   bentoLayout: "bento", // 'bento', 'lists', 'buttons'
 
   // Weather
-  weatherKey: "YourOpenWeatherMapAPIKey", // Write here your API Key
+  weatherKey: "b89dde2e6801a22524f128f770e94712", // Write here your API Key
   weatherIcons: "OneDark", // 'Onedark', 'Nord', 'Dark', 'White'
-  weatherUnit: "C", // 'F', 'C'
+  weatherUnit: "F", // 'F', 'C'
   language: "en", // More languages in https://openweathermap.org/current#multi
 
   trackLocation: true, // Request location from the browser. If false, or location is denied, use the coordinates below.
