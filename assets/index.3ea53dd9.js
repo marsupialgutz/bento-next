@@ -189,7 +189,7 @@ const CONFIG = {
       id: "4",
       name: "Misskey",
       icon: "fab-mastodon",
-      link: "https://calendar.google.com/calendar/r"
+      link: "https://stop.voring.me"
     },
     {
       id: "5",
@@ -199,7 +199,7 @@ const CONFIG = {
     },
     {
       id: "6",
-      name: "Odysee",
+      name: "Youtube",
       icon: "fab-youtube",
       link: "https://youtube.com"
     }
