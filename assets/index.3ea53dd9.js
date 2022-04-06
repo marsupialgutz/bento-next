@@ -101,7 +101,7 @@ const CONFIG = {
 
   // General
   name: "Mars",
-  openInNewTab: true,
+  openInNewTab: false,
   title: "Welcome",
 
   // Clock
