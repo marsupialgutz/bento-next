@@ -1,90 +1,90 @@
 import { r as ref, o as onMounted, a as resolveComponent, b as openBlock, c as createElementBlock, d as createBaseVNode, w as withDirectives, v as vModelText, n as normalizeClass, u as unref, e as createVNode, f as withModifiers, F as Fragment, g as renderList, t as toDisplayString, h as onBeforeMount, i as withCtx, j as createBlock, k as createCommentVNode, T as Transition, l as contenteditable, S as Suspense, m as library$1, _ as _iconsCache, p as _iconsCache$1, q as createApp, s as FontAwesomeIcon } from './vendor.3e14abc7.js';
 
 const p = function polyfill() {
-    const relList = document.createElement('link').relList;
-    if (relList && relList.supports && relList.supports('modulepreload')) {
-        return;
+  const relList = document.createElement('link').relList;
+  if (relList && relList.supports && relList.supports('modulepreload')) {
+    return;
+  }
+  for (const link of document.querySelectorAll('link[rel="modulepreload"]')) {
+    processPreload(link);
+  }
+  new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type !== 'childList') {
+        continue;
+      }
+      for (const node of mutation.addedNodes) {
+        if (node.tagName === 'LINK' && node.rel === 'modulepreload')
+          processPreload(node);
+      }
     }
-    for (const link of document.querySelectorAll('link[rel="modulepreload"]')) {
-        processPreload(link);
-    }
-    new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-            if (mutation.type !== 'childList') {
-                continue;
-            }
-            for (const node of mutation.addedNodes) {
-                if (node.tagName === 'LINK' && node.rel === 'modulepreload')
-                    processPreload(node);
-            }
-        }
-    }).observe(document, { childList: true, subtree: true });
-    function getFetchOpts(script) {
-        const fetchOpts = {};
-        if (script.integrity)
-            fetchOpts.integrity = script.integrity;
-        if (script.referrerpolicy)
-            fetchOpts.referrerPolicy = script.referrerpolicy;
-        if (script.crossorigin === 'use-credentials')
-            fetchOpts.credentials = 'include';
-        else if (script.crossorigin === 'anonymous')
-            fetchOpts.credentials = 'omit';
-        else
-            fetchOpts.credentials = 'same-origin';
-        return fetchOpts;
-    }
-    function processPreload(link) {
-        if (link.ep)
-            // ep marker = processed
-            return;
-        link.ep = true;
-        // prepopulate the load record
-        const fetchOpts = getFetchOpts(link);
-        fetch(link.href, fetchOpts);
-    }
-};true&&p();
+  }).observe(document, { childList: true, subtree: true });
+  function getFetchOpts(script) {
+    const fetchOpts = {};
+    if (script.integrity)
+      fetchOpts.integrity = script.integrity;
+    if (script.referrerpolicy)
+      fetchOpts.referrerPolicy = script.referrerpolicy;
+    if (script.crossorigin === 'use-credentials')
+      fetchOpts.credentials = 'include';
+    else if (script.crossorigin === 'anonymous')
+      fetchOpts.credentials = 'omit';
+    else
+      fetchOpts.credentials = 'same-origin';
+    return fetchOpts;
+  }
+  function processPreload(link) {
+    if (link.ep)
+      // ep marker = processed
+      return;
+    link.ep = true;
+    // prepopulate the load record
+    const fetchOpts = getFetchOpts(link);
+    fetch(link.href, fetchOpts);
+  }
+}; true && p();
 
 var index = '';
 
 var main = '';
 
-const scriptRel = 'modulepreload';const seen = {};const base = '/';const __vitePreload = function preload(baseModule, deps) {
+const scriptRel = 'modulepreload'; const seen = {}; const base = '/'; const __vitePreload = function preload(baseModule, deps) {
+  // @ts-ignore
+  if (!true || !deps || deps.length === 0) {
+    return baseModule();
+  }
+  return Promise.all(deps.map((dep) => {
     // @ts-ignore
-    if (!true || !deps || deps.length === 0) {
-        return baseModule();
+    dep = `${base}${dep}`;
+    // @ts-ignore
+    if (dep in seen)
+      return;
+    // @ts-ignore
+    seen[dep] = true;
+    const isCss = dep.endsWith('.css');
+    const cssSelector = isCss ? '[rel="stylesheet"]' : '';
+    // @ts-ignore check if the file is already preloaded by SSR markup
+    if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
+      return;
     }
-    return Promise.all(deps.map((dep) => {
-        // @ts-ignore
-        dep = `${base}${dep}`;
-        // @ts-ignore
-        if (dep in seen)
-            return;
-        // @ts-ignore
-        seen[dep] = true;
-        const isCss = dep.endsWith('.css');
-        const cssSelector = isCss ? '[rel="stylesheet"]' : '';
-        // @ts-ignore check if the file is already preloaded by SSR markup
-        if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
-            return;
-        }
-        // @ts-ignore
-        const link = document.createElement('link');
-        // @ts-ignore
-        link.rel = isCss ? 'stylesheet' : scriptRel;
-        if (!isCss) {
-            link.as = 'script';
-            link.crossOrigin = '';
-        }
-        link.href = dep;
-        // @ts-ignore
-        document.head.appendChild(link);
-        if (isCss) {
-            return new Promise((res, rej) => {
-                link.addEventListener('load', res);
-                link.addEventListener('error', () => rej(new Error(`Unable to preload CSS for ${dep}`)));
-            });
-        }
-    })).then(() => baseModule());
+    // @ts-ignore
+    const link = document.createElement('link');
+    // @ts-ignore
+    link.rel = isCss ? 'stylesheet' : scriptRel;
+    if (!isCss) {
+      link.as = 'script';
+      link.crossOrigin = '';
+    }
+    link.href = dep;
+    // @ts-ignore
+    document.head.appendChild(link);
+    if (isCss) {
+      return new Promise((res, rej) => {
+        link.addEventListener('load', res);
+        link.addEventListener('error', () => rej(new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }
+  })).then(() => baseModule());
 };
 
 //
@@ -107,7 +107,7 @@ const CONFIG = {
   // Clock
   twelveHourFormat: true,
   flashSeparator: true,
-  
+
   // Theme
   theme: "bento",
   imageBackground: false,
@@ -262,69 +262,69 @@ const config = CONFIG;
 
 function __variableDynamicImportRuntime1__(path) {
   switch (path) {
-    case './src/assets/css/themes/arc.css': return __vitePreload(() => Promise.resolve({}),true?["assets/arc.e69c3415.css"]:void 0);
-    case './src/assets/css/themes/bento.css': return __vitePreload(() => Promise.resolve({}),true?["assets/bento.f9396da8.css"]:void 0);
-    case './src/assets/css/themes/catppuccin.css': return __vitePreload(() => Promise.resolve({}),true?["assets/catppuccin.577eb180.css"]:void 0);
-    case './src/assets/css/themes/conceptdark.css': return __vitePreload(() => Promise.resolve({}),true?["assets/conceptdark.3d6a1919.css"]:void 0);
-    case './src/assets/css/themes/monokai.css': return __vitePreload(() => Promise.resolve({}),true?["assets/monokai.6ea9ad46.css"]:void 0);
-    case './src/assets/css/themes/nord.css': return __vitePreload(() => Promise.resolve({}),true?["assets/nord.086e7b7e.css"]:void 0);
-    case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}),true?["assets/sakura.ae322a50.css"]:void 0);
-    case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}),true?["assets/solarized.c538012f.css"]:void 0);
-    case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}),true?["assets/summer.e2b75cc6.css"]:void 0);
-    default: return new Promise(function(resolve, reject) {
+    case './src/assets/css/themes/arc.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/arc.e69c3415.css"] : void 0);
+    case './src/assets/css/themes/bento.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/bento.f9396da8.css"] : void 0);
+    case './src/assets/css/themes/catppuccin.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/catppuccin.577eb180.css"] : void 0);
+    case './src/assets/css/themes/conceptdark.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/conceptdark.3d6a1919.css"] : void 0);
+    case './src/assets/css/themes/monokai.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/monokai.6ea9ad46.css"] : void 0);
+    case './src/assets/css/themes/nord.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/nord.086e7b7e.css"] : void 0);
+    case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/sakura.ae322a50.css"] : void 0);
+    case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/solarized.c538012f.css"] : void 0);
+    case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/summer.e2b75cc6.css"] : void 0);
+    default: return new Promise(function (resolve, reject) {
       (typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout)(
         reject.bind(null, new Error("Unknown variable dynamic import: " + path))
       );
     })
-   }
- }
+  }
+}
 
 function __variableDynamicImportRuntime0__(path) {
   switch (path) {
-    case './src/assets/css/themes/arc.css': return __vitePreload(() => Promise.resolve({}),true?["assets/arc.e69c3415.css"]:void 0);
-    case './src/assets/css/themes/bento.css': return __vitePreload(() => Promise.resolve({}),true?["assets/bento.f9396da8.css"]:void 0);
-    case './src/assets/css/themes/catppuccin.css': return __vitePreload(() => Promise.resolve({}),true?["assets/catppuccin.577eb180.css"]:void 0);
-    case './src/assets/css/themes/conceptdark.css': return __vitePreload(() => Promise.resolve({}),true?["assets/conceptdark.3d6a1919.css"]:void 0);
-    case './src/assets/css/themes/monokai.css': return __vitePreload(() => Promise.resolve({}),true?["assets/monokai.6ea9ad46.css"]:void 0);
-    case './src/assets/css/themes/nord.css': return __vitePreload(() => Promise.resolve({}),true?["assets/nord.086e7b7e.css"]:void 0);
-    case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}),true?["assets/sakura.ae322a50.css"]:void 0);
-    case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}),true?["assets/solarized.c538012f.css"]:void 0);
-    case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}),true?["assets/summer.e2b75cc6.css"]:void 0);
-    default: return new Promise(function(resolve, reject) {
+    case './src/assets/css/themes/arc.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/arc.e69c3415.css"] : void 0);
+    case './src/assets/css/themes/bento.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/bento.f9396da8.css"] : void 0);
+    case './src/assets/css/themes/catppuccin.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/catppuccin.577eb180.css"] : void 0);
+    case './src/assets/css/themes/conceptdark.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/conceptdark.3d6a1919.css"] : void 0);
+    case './src/assets/css/themes/monokai.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/monokai.6ea9ad46.css"] : void 0);
+    case './src/assets/css/themes/nord.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/nord.086e7b7e.css"] : void 0);
+    case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/sakura.ae322a50.css"] : void 0);
+    case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/solarized.c538012f.css"] : void 0);
+    case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/summer.e2b75cc6.css"] : void 0);
+    default: return new Promise(function (resolve, reject) {
       (typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout)(
         reject.bind(null, new Error("Unknown variable dynamic import: " + path))
       );
     })
-   }
- }
+  }
+}
 
 
-      // this is the same script that's included in updateTheme(), we need to run it here as opposed to calling it from the module as we get a FOUC if not.
-      // I'm not actually sure why, but I'd assume it's down to load order.
-      if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.body.classList.add("notransition");
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+// this is the same script that's included in updateTheme(), we need to run it here as opposed to calling it from the module as we get a FOUC if not.
+// I'm not actually sure why, but I'd assume it's down to load order.
+if (
+  localStorage.theme === "dark" ||
+  (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+) {
+  document.body.classList.add("notransition");
+  document.documentElement.classList.add("dark");
+} else {
+  document.documentElement.classList.remove("dark");
+}
 
-      document.title = config.title;
-      __variableDynamicImportRuntime0__(`./src/assets/css/themes/${config.theme}.css`);
-      if (localStorage.getItem("colors")) {
-        __variableDynamicImportRuntime1__(`./src/assets/css/themes/${localStorage.getItem("colors")}.css`);
-      }
-      if (config.imageBackground) {
-        const root = document.querySelector(":root");
-        if (config.imageUrl.startsWith("http")) {
-          root.style.setProperty("--imgbg", `url(${config.imageUrl})`);
-        } else {
-          root.style.setProperty("--imgbg", `url(/src/assets/images/${config.imageUrl})`);
-        }
-        document.body.classList.add("withImageBackground");
-      }
+document.title = config.title;
+__variableDynamicImportRuntime0__(`./src/assets/css/themes/${config.theme}.css`);
+if (localStorage.getItem("colors")) {
+  __variableDynamicImportRuntime1__(`./src/assets/css/themes/${localStorage.getItem("colors")}.css`);
+}
+if (config.imageBackground) {
+  const root = document.querySelector(":root");
+  if (config.imageUrl.startsWith("http")) {
+    root.style.setProperty("--imgbg", `url(${config.imageUrl})`);
+  } else {
+    root.style.setProperty("--imgbg", `url(/src/assets/images/${config.imageUrl})`);
+  }
+  document.body.classList.add("withImageBackground");
+}
 
 var SearchBar_vue_vue_type_style_index_0_scoped_true_lang = '';
 
@@ -346,83 +346,83 @@ const _hoisted_2$8 = ["placeholder", "aira-label"];
 const _sfc_main$d = {
   setup(__props) {
 
-const searchBox = ref(null);
-const searchText = ref("");
+    const searchBox = ref(null);
+    const searchText = ref("");
 
-onMounted(() => {
-  if (config.autoFocusBar) {
-    searchBox.value.focus();
+    onMounted(() => {
+      if (config.autoFocusBar) {
+        searchBox.value.focus();
+      }
+    });
+
+    const engines = {
+      google: {
+        url: "https://www.google.com/search?q=",
+        display: "Google",
+      },
+      ddg: {
+        url: "https://duckduckgo.com/?q=",
+        display: "DuckDuckGo",
+      },
+    };
+
+    const placeholder = () => {
+      if (config.barPlaceholder === "") {
+        return engines[config.searchEngine].display;
+      } else {
+        return config.barPlaceholder;
+      }
+    };
+
+    const submitted = () => {
+      if (config.openInNewTab) {
+        window.open(`${engines[config.searchEngine].url}${searchText.value}`);
+      } else {
+        window.location.href = `${engines[config.searchEngine].url}${searchText.value}`;
+      }
+      searchText.value = "";
+    };
+
+    return (_ctx, _cache) => {
+      const _component_fa_icon = resolveComponent("fa-icon");
+
+      return (openBlock(), createElementBlock("div", _hoisted_1$d, [
+        createBaseVNode("form", {
+          id: "form",
+          class: normalizeClass(["searchform flex flex-row items-center rounded-md transition-all ease-in-out duration-150", unref(config).barStyle]),
+          role: "search",
+          autocomplete: "off",
+          onSubmit: _cache[1] || (_cache[1] = withModifiers($event => (submitted()), ["prevent"]))
+        }, [
+          withDirectives(createBaseVNode("input", {
+            type: "search",
+            onfocus: "this.select()",
+            class: normalizeClass(["searchinput h-full w-full p-2 rounded-l-md bg-cards dark:bg-darkcards dark:text-darkforeground caret-accent dark:caret-darkaccent focus:outline-none placeholder-foreground dark:placeholder-darkforeground shadow-inherit", unref(config).barStyle]),
+            id: "query",
+            name: "q",
+            placeholder: placeholder(),
+            "aira-label": placeholder(),
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => ((searchText).value = $event)),
+            ref_key: "searchBox",
+            ref: searchBox
+          }, null, 10, _hoisted_2$8), [
+            [vModelText, searchText.value]
+          ]),
+          createBaseVNode("button", {
+            class: normalizeClass([unref(config).barStyle, "searchbutton cursor-pointer w-[4em] h-full p-[6.9px] rounded-r-md text-center bg-cards dark:bg-darkcards"])
+          }, [
+            createVNode(_component_fa_icon, {
+              icon: "magnifying-glass",
+              class: normalizeClass([unref(config).barStyle, "text-foreground dark:text-darkforeground fill-current rounded-r-md bg-cards dark:bg-darkcards"])
+            }, null, 8, ["class"])
+          ], 2)
+        ], 34)
+      ], 512))
+    }
   }
-});
-
-const engines = {
-  google: {
-    url: "https://www.google.com/search?q=",
-    display: "Google",
-  },
-  ddg: {
-    url: "https://duckduckgo.com/?q=",
-    display: "DuckDuckGo",
-  },
-};
-
-const placeholder = () => {
-  if (config.barPlaceholder === "") {
-    return engines[config.searchEngine].display;
-  } else {
-    return config.barPlaceholder;
-  }
-};
-
-const submitted = () => {
-  if (config.openInNewTab) {
-    window.open(`${engines[config.searchEngine].url}${searchText.value}`);
-  } else {
-    window.location.href = `${engines[config.searchEngine].url}${searchText.value}`;
-  }
-  searchText.value = "";
-};
-
-return (_ctx, _cache) => {
-  const _component_fa_icon = resolveComponent("fa-icon");
-
-  return (openBlock(), createElementBlock("div", _hoisted_1$d, [
-    createBaseVNode("form", {
-      id: "form",
-      class: normalizeClass(["searchform flex flex-row items-center rounded-md transition-all ease-in-out duration-150", unref(config).barStyle]),
-      role: "search",
-      autocomplete: "off",
-      onSubmit: _cache[1] || (_cache[1] = withModifiers($event => (submitted()), ["prevent"]))
-    }, [
-      withDirectives(createBaseVNode("input", {
-        type: "search",
-        onfocus: "this.select()",
-        class: normalizeClass(["searchinput h-full w-full p-2 rounded-l-md bg-cards dark:bg-darkcards dark:text-darkforeground caret-accent dark:caret-darkaccent focus:outline-none placeholder-foreground dark:placeholder-darkforeground shadow-inherit", unref(config).barStyle]),
-        id: "query",
-        name: "q",
-        placeholder: placeholder(),
-        "aira-label": placeholder(),
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => ((searchText).value = $event)),
-        ref_key: "searchBox",
-        ref: searchBox
-      }, null, 10, _hoisted_2$8), [
-        [vModelText, searchText.value]
-      ]),
-      createBaseVNode("button", {
-        class: normalizeClass([unref(config).barStyle, "searchbutton cursor-pointer w-[4em] h-full p-[6.9px] rounded-r-md text-center bg-cards dark:bg-darkcards"])
-      }, [
-        createVNode(_component_fa_icon, {
-          icon: "magnifying-glass",
-          class: normalizeClass([unref(config).barStyle, "text-foreground dark:text-darkforeground fill-current rounded-r-md bg-cards dark:bg-darkcards"])
-        }, null, 8, ["class"])
-      ], 2)
-    ], 34)
-  ], 512))
-}
-}
 
 };
-var SearchBar = /*#__PURE__*/_export_sfc(_sfc_main$d, [['__scopeId',"data-v-5132e08c"]]);
+var SearchBar = /*#__PURE__*/_export_sfc(_sfc_main$d, [['__scopeId', "data-v-5132e08c"]]);
 
 let weatherPromise = getWeather();
 setInterval(() => {
@@ -548,36 +548,36 @@ const _hoisted_2$7 = ["onClick"];
 
 const _sfc_main$c = {
   props: {
-  show: Boolean,
-},
+    show: Boolean,
+  },
   setup(__props) {
 
 
 
-const setTheme = (theme) => {
-  let link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = `/css/themes/${theme}.css`;
-  document.head.appendChild(link);
-  localStorage.setItem("colors", theme);
-};
+    const setTheme = (theme) => {
+      let link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = `/css/themes/${theme}.css`;
+      document.head.appendChild(link);
+      localStorage.setItem("colors", theme);
+    };
 
-const capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+    const capitalize = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$c, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList(unref(config).themes, (theme, index) => {
-      return (openBlock(), createElementBlock("p", {
-        key: index,
-        onClick: $event => (setTheme(theme)),
-        class: "block px-4 py-2 text-md cursor-pointer hover:text-background dark:hover:text-darkbackground hover:bg-accent dark:hover:bg-darkaccent text-center"
-      }, toDisplayString(capitalize(theme)), 9, _hoisted_2$7))
-    }), 128))
-  ]))
-}
-}
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$c, [
+        (openBlock(true), createElementBlock(Fragment, null, renderList(unref(config).themes, (theme, index) => {
+          return (openBlock(), createElementBlock("p", {
+            key: index,
+            onClick: $event => (setTheme(theme)),
+            class: "block px-4 py-2 text-md cursor-pointer hover:text-background dark:hover:text-darkbackground hover:bg-accent dark:hover:bg-darkaccent text-center"
+          }, toDisplayString(capitalize(theme)), 9, _hoisted_2$7))
+        }), 128))
+      ]))
+    }
+  }
 
 };
 
@@ -588,59 +588,59 @@ const _hoisted_1$b = { class: "flex flex-col absolute mx-1 right-7 top-16 lg:top
 const _sfc_main$b = {
   setup(__props) {
 
-onBeforeMount(async () => {
-  await autoChange();
-});
+    onBeforeMount(async () => {
+      await autoChange();
+    });
 
-const toggleTheme = () => {
-  if (localStorage.theme === "dark") {
-    localStorage.theme = "light";
-  } else {
-    localStorage.theme = "dark";
+    const toggleTheme = () => {
+      if (localStorage.theme === "dark") {
+        localStorage.theme = "light";
+      } else {
+        localStorage.theme = "dark";
+      }
+      updateTheme();
+    };
+    const show = ref(false);
+    const isOpen = () => {
+      console.log(show.value);
+      show.value = !show.value;
+    };
+
+    return (_ctx, _cache) => {
+      const _component_fa_icon = resolveComponent("fa-icon");
+
+      return (openBlock(), createElementBlock("div", _hoisted_1$b, [
+        createBaseVNode("button", {
+          id: "themeButton",
+          onClick: _cache[0] || (_cache[0] = $event => (toggleTheme())),
+          class: "border-0 cursor-pointer text-foreground dark:text-darkforeground peer"
+        }, [
+          createVNode(_component_fa_icon, {
+            icon: unref(theme) == 'dark' ? 'moon' : 'sun',
+            id: "icon",
+            class: "w-5 h-5"
+          }, null, 8, ["icon"])
+        ]),
+        createVNode(_component_fa_icon, {
+          onClick: _cache[1] || (_cache[1] = $event => (isOpen())),
+          class: normalizeClass([`${show.value ? '-translate-y-0 opacity-100' : 'opacity-0'} ${show.value ? 'rotate-180' : 'rotate-0'}`, "w-4 h-4 -translate-y-5 hover:-translate-y-0 peer-hover:-translate-y-0 peer-hover:opacity-100 hover:opacity-100 opacity-0 pl-[1px] pt-1 text-foreground dark:text-darkforeground origin-center transition-all ease-in-out duration-200"]),
+          icon: "circle-down"
+        }, null, 8, ["class"]),
+        createVNode(Transition, { name: "fade" }, {
+          default: withCtx(() => [
+            (show.value)
+              ? (openBlock(), createBlock(_sfc_main$c, {
+                key: 0,
+                onClick: _cache[2] || (_cache[2] = withModifiers(() => { }, ["prevent"])),
+                class: "top-20 lg:top-10 right-6 opacity-100 transition-all duration-100 ease-in-out"
+              }))
+              : createCommentVNode("", true)
+          ]),
+          _: 1
+        })
+      ]))
+    }
   }
-  updateTheme();
-};
-const show = ref(false);
-const isOpen = () => {
-  console.log(show.value);
-  show.value = !show.value;
-};
-
-return (_ctx, _cache) => {
-  const _component_fa_icon = resolveComponent("fa-icon");
-
-  return (openBlock(), createElementBlock("div", _hoisted_1$b, [
-    createBaseVNode("button", {
-      id: "themeButton",
-      onClick: _cache[0] || (_cache[0] = $event => (toggleTheme())),
-      class: "border-0 cursor-pointer text-foreground dark:text-darkforeground peer"
-    }, [
-      createVNode(_component_fa_icon, {
-        icon: unref(theme) == 'dark' ? 'moon' : 'sun',
-        id: "icon",
-        class: "w-5 h-5"
-      }, null, 8, ["icon"])
-    ]),
-    createVNode(_component_fa_icon, {
-      onClick: _cache[1] || (_cache[1] = $event => (isOpen())),
-      class: normalizeClass([`${show.value ? '-translate-y-0 opacity-100' : 'opacity-0' } ${show.value ? 'rotate-180' : 'rotate-0'}`, "w-4 h-4 -translate-y-5 hover:-translate-y-0 peer-hover:-translate-y-0 peer-hover:opacity-100 hover:opacity-100 opacity-0 pl-[1px] pt-1 text-foreground dark:text-darkforeground origin-center transition-all ease-in-out duration-200"]),
-      icon: "circle-down"
-    }, null, 8, ["class"]),
-    createVNode(Transition, { name: "fade" }, {
-      default: withCtx(() => [
-        (show.value)
-          ? (openBlock(), createBlock(_sfc_main$c, {
-              key: 0,
-              onClick: _cache[2] || (_cache[2] = withModifiers(() => {}, ["prevent"])),
-              class: "top-20 lg:top-10 right-6 opacity-100 transition-all duration-100 ease-in-out"
-            }))
-          : createCommentVNode("", true)
-      ]),
-      _: 1
-    })
-  ]))
-}
-}
 
 };
 
@@ -649,51 +649,51 @@ var DigitalClock_vue_vue_type_style_index_0_lang = '';
 const _hoisted_1$a = { class: "clock flex align-center justify-center" };
 const _hoisted_2$6 = {
   id: "hour",
-  class: "text-[12vh] font-bold font-sans text-foreground dark:text-darkforeground"
+  class: "text-[8vh] font-bold font-sans text-foreground dark:text-darkforeground"
 };
 const _hoisted_3$3 = {
   id: "minutes",
-  class: "text-[12vh] font-bold font-sans text-foreground dark:text-darkforeground"
+  class: "text-[8vh] font-bold font-sans text-foreground dark:text-darkforeground"
 };
 
 
 const _sfc_main$a = {
   setup(__props) {
 
-onMounted(() => {
-  displayClock();
-});
+    onMounted(() => {
+      displayClock();
+    });
 
-const hh = ref(null);
-const min = ref(null);
-const ampm = ref(null);
-const displayClock = () => {
-  const date = new Date();
-  min.value = ("0" + date.getMinutes()).slice(-2);
-  hh.value = date.getHours();
-  ampm.value = "";
+    const hh = ref(null);
+    const min = ref(null);
+    const ampm = ref(null);
+    const displayClock = () => {
+      const date = new Date();
+      min.value = ("0" + date.getMinutes()).slice(-2);
+      hh.value = date.getHours();
+      ampm.value = "";
 
-  if (config.twelveHourFormat) {
-    ampm.value = hh.value >= 12 ? " pm" : " am";
-    hh.value = hh.value % 12;
-    hh.value = hh.value ? hh.value : 12;
+      if (config.twelveHourFormat) {
+        ampm.value = hh.value >= 12 ? " pm" : " am";
+        hh.value = hh.value % 12;
+        hh.value = hh.value ? hh.value : 12;
+      }
+    };
+
+
+    setInterval(() => displayClock(), 1000);
+
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$a, [
+        createBaseVNode("div", _hoisted_2$6, toDisplayString(hh.value), 1),
+        createBaseVNode("div", {
+          id: "separator",
+          class: normalizeClass(["text-[8vh] font-bold font-sans text-foreground dark:text-darkforeground", unref(config).flashSeparator ? 'pulse' : ''])
+        }, toDisplayString(":"), 2),
+        createBaseVNode("div", _hoisted_3$3, toDisplayString(min.value + ampm.value), 1)
+      ]))
+    }
   }
-};
-
-
-setInterval(() => displayClock(), 1000);
-
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$a, [
-    createBaseVNode("div", _hoisted_2$6, toDisplayString(hh.value), 1),
-    createBaseVNode("div", {
-      id: "separator",
-      class: normalizeClass(["text-[12vh] font-bold font-sans text-foreground dark:text-darkforeground", unref(config).flashSeparator  ? 'pulse' : ''])
-    }, toDisplayString(":"), 2),
-    createBaseVNode("div", _hoisted_3$3, toDisplayString(min.value + ampm.value), 1)
-  ]))
-}
-}
 
 };
 
@@ -703,59 +703,59 @@ const _hoisted_2$5 = { class: "text-2xl text-foreground dark:text-darkforeground
 const _sfc_main$9 = {
   setup(__props) {
 
-const today = new Date();
-const hour = today.getHours();
+    const today = new Date();
+    const hour = today.getHours();
 
-const getGreeting = () => {
-  if (hour >= 23 || hour < 5) {
-    return `${config.greetingNight} `;
-  } else if (hour >= 6 && hour < 12) {
-    return `${config.greetingMorning} `;
-  } else if (hour >= 12 && hour < 17) {
-    return `${config.greetingAfternoon} `;
-  } else {
-    return `${config.greetingEvening} `;
+    const getGreeting = () => {
+      if (hour >= 23 || hour < 5) {
+        return `${config.greetingNight} `;
+      } else if (hour >= 6 && hour < 12) {
+        return `${config.greetingMorning} `;
+      } else if (hour >= 12 && hour < 17) {
+        return `${config.greetingAfternoon} `;
+      } else {
+        return `${config.greetingEvening} `;
+      }
+    };
+
+    const name = () => {
+      if (!localStorage.getItem("name")) {
+        return config.name;
+      } else {
+        return localStorage.getItem("name");
+      }
+    };
+    const save = () => {
+      document.activeElement.blur();
+      if (input.value == "") {
+        localStorage.removeItem("name");
+      } else {
+        localStorage.setItem("name", input.value);
+      }
+      input.value = name();
+    };
+
+    const input = ref(name());
+    //
+
+    //    <input v-else type="text" :value="name()" class="text-2xl text-foreground dark:text-darkforeground   w-14" @keyup.enter="editing = !editing"/>
+    ref(false);
+
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$9, [
+        createBaseVNode("span", _hoisted_2$5, toDisplayString(getGreeting()), 1),
+        createVNode(unref(contenteditable), {
+          tag: "span",
+          contenteditable: true,
+          modelValue: input.value,
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => ((input).value = $event)),
+          noNL: true,
+          onReturned: _cache[1] || (_cache[1] = $event => (save())),
+          class: "text-2xl text-foreground dark:text-darkforeground outline-none hover:bg-cards hover:dark:bg-darkcards"
+        }, null, 8, ["modelValue"])
+      ]))
+    }
   }
-};
-
-const name = () => {
-  if (!localStorage.getItem("name")) {
-    return config.name;
-  } else {
-    return localStorage.getItem("name");
-  }
-};
-const save = () => {
-  document.activeElement.blur();
-  if (input.value == "") {
-    localStorage.removeItem("name");
-  } else {
-    localStorage.setItem("name", input.value);
-  }
-  input.value = name();
-};
-
-const input = ref(name());
-//
-
-//    <input v-else type="text" :value="name()" class="text-2xl text-foreground dark:text-darkforeground   w-14" @keyup.enter="editing = !editing"/>
-ref(false);
-
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$9, [
-    createBaseVNode("span", _hoisted_2$5, toDisplayString(getGreeting()), 1),
-    createVNode(unref(contenteditable), {
-      tag: "span",
-      contenteditable: true,
-      modelValue: input.value,
-      "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => ((input).value = $event)),
-      noNL: true,
-      onReturned: _cache[1] || (_cache[1] = $event => (save())),
-      class: "text-2xl text-foreground dark:text-darkforeground outline-none hover:bg-cards hover:dark:bg-darkcards"
-    }, null, 8, ["modelValue"])
-  ]))
-}
-}
 
 };
 
@@ -775,32 +775,32 @@ const _hoisted_5$2 = { class: "text-[8vh] font-bold text-foreground dark:text-da
 const _sfc_main$8 = {
   setup(__props) {
 
-onMounted(() => {
-  displayDate();
-});
+    onMounted(() => {
+      displayDate();
+    });
 
-const mm = ref(null);
-const dd = ref(null);
+    const mm = ref(null);
+    const dd = ref(null);
 
-const displayDate = () => {
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const displayDate = () => {
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  const date = new Date();
-  mm.value = `${monthNames[date.getMonth()]} `;
-  dd.value = date.getDate();
-};
+      const date = new Date();
+      mm.value = `${monthNames[date.getMonth()]} `;
+      dd.value = date.getDate();
+    };
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$8, [
-    createBaseVNode("div", _hoisted_2$4, [
-      createBaseVNode("p", _hoisted_3$2, toDisplayString(mm.value), 1)
-    ]),
-    createBaseVNode("div", _hoisted_4$2, [
-      createBaseVNode("p", _hoisted_5$2, toDisplayString(dd.value), 1)
-    ])
-  ]))
-}
-}
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$8, [
+        createBaseVNode("div", _hoisted_2$4, [
+          createBaseVNode("p", _hoisted_3$2, toDisplayString(mm.value), 1)
+        ]),
+        createBaseVNode("div", _hoisted_4$2, [
+          createBaseVNode("p", _hoisted_5$2, toDisplayString(dd.value), 1)
+        ])
+      ]))
+    }
+  }
 
 };
 
@@ -958,7 +958,7 @@ var __glob_1_75 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAAB
 
 const getIcon = (weather) => {
   let iconTheme = config.weatherIcons;
-  return new URL({ "../assets/icons/weather/Dark/01d.png": __glob_1_0, "../assets/icons/weather/Dark/01n.png": __glob_1_1, "../assets/icons/weather/Dark/02d.png": __glob_1_2, "../assets/icons/weather/Dark/02n.png": __glob_1_3, "../assets/icons/weather/Dark/03d.png": __glob_1_4, "../assets/icons/weather/Dark/03n.png": __glob_1_5, "../assets/icons/weather/Dark/04d.png": __glob_1_6, "../assets/icons/weather/Dark/04n.png": __glob_1_7, "../assets/icons/weather/Dark/09d.png": __glob_1_8, "../assets/icons/weather/Dark/09n.png": __glob_1_9, "../assets/icons/weather/Dark/10d.png": __glob_1_10, "../assets/icons/weather/Dark/10n.png": __glob_1_11, "../assets/icons/weather/Dark/11d.png": __glob_1_12, "../assets/icons/weather/Dark/11n.png": __glob_1_13, "../assets/icons/weather/Dark/13d.png": __glob_1_14, "../assets/icons/weather/Dark/13n.png": __glob_1_15, "../assets/icons/weather/Dark/50d.png": __glob_1_16, "../assets/icons/weather/Dark/50n.png": __glob_1_17, "../assets/icons/weather/Dark/unknown.png": __glob_1_18, "../assets/icons/weather/Nord/01d.png": __glob_1_19, "../assets/icons/weather/Nord/01n.png": __glob_1_20, "../assets/icons/weather/Nord/02d.png": __glob_1_21, "../assets/icons/weather/Nord/02n.png": __glob_1_22, "../assets/icons/weather/Nord/03d.png": __glob_1_23, "../assets/icons/weather/Nord/03n.png": __glob_1_24, "../assets/icons/weather/Nord/04d.png": __glob_1_25, "../assets/icons/weather/Nord/04n.png": __glob_1_26, "../assets/icons/weather/Nord/09d.png": __glob_1_27, "../assets/icons/weather/Nord/09n.png": __glob_1_28, "../assets/icons/weather/Nord/10d.png": __glob_1_29, "../assets/icons/weather/Nord/10n.png": __glob_1_30, "../assets/icons/weather/Nord/11d.png": __glob_1_31, "../assets/icons/weather/Nord/11n.png": __glob_1_32, "../assets/icons/weather/Nord/13d.png": __glob_1_33, "../assets/icons/weather/Nord/13n.png": __glob_1_34, "../assets/icons/weather/Nord/50d.png": __glob_1_35, "../assets/icons/weather/Nord/50n.png": __glob_1_36, "../assets/icons/weather/Nord/unknown.png": __glob_1_37, "../assets/icons/weather/OneDark/01d.png": __glob_1_38, "../assets/icons/weather/OneDark/01n.png": __glob_1_39, "../assets/icons/weather/OneDark/02d.png": __glob_1_40, "../assets/icons/weather/OneDark/02n.png": __glob_1_41, "../assets/icons/weather/OneDark/03d.png": __glob_1_42, "../assets/icons/weather/OneDark/03n.png": __glob_1_43, "../assets/icons/weather/OneDark/04d.png": __glob_1_44, "../assets/icons/weather/OneDark/04n.png": __glob_1_45, "../assets/icons/weather/OneDark/09d.png": __glob_1_46, "../assets/icons/weather/OneDark/09n.png": __glob_1_47, "../assets/icons/weather/OneDark/10d.png": __glob_1_48, "../assets/icons/weather/OneDark/10n.png": __glob_1_49, "../assets/icons/weather/OneDark/11d.png": __glob_1_50, "../assets/icons/weather/OneDark/11n.png": __glob_1_51, "../assets/icons/weather/OneDark/13d.png": __glob_1_52, "../assets/icons/weather/OneDark/13n.png": __glob_1_53, "../assets/icons/weather/OneDark/50d.png": __glob_1_54, "../assets/icons/weather/OneDark/50n.png": __glob_1_55, "../assets/icons/weather/OneDark/unknown.png": __glob_1_56, "../assets/icons/weather/White/01d.png": __glob_1_57, "../assets/icons/weather/White/01n.png": __glob_1_58, "../assets/icons/weather/White/02d.png": __glob_1_59, "../assets/icons/weather/White/02n.png": __glob_1_60, "../assets/icons/weather/White/03d.png": __glob_1_61, "../assets/icons/weather/White/03n.png": __glob_1_62, "../assets/icons/weather/White/04d.png": __glob_1_63, "../assets/icons/weather/White/04n.png": __glob_1_64, "../assets/icons/weather/White/09d.png": __glob_1_65, "../assets/icons/weather/White/09n.png": __glob_1_66, "../assets/icons/weather/White/10d.png": __glob_1_67, "../assets/icons/weather/White/10n.png": __glob_1_68, "../assets/icons/weather/White/11d.png": __glob_1_69, "../assets/icons/weather/White/11n.png": __glob_1_70, "../assets/icons/weather/White/13d.png": __glob_1_71, "../assets/icons/weather/White/13n.png": __glob_1_72, "../assets/icons/weather/White/50d.png": __glob_1_73, "../assets/icons/weather/White/50n.png": __glob_1_74, "../assets/icons/weather/White/unknown.png": __glob_1_75,}[`../assets/icons/weather/${iconTheme}/${weather}.png`], self.location).href;
+  return new URL({ "../assets/icons/weather/Dark/01d.png": __glob_1_0, "../assets/icons/weather/Dark/01n.png": __glob_1_1, "../assets/icons/weather/Dark/02d.png": __glob_1_2, "../assets/icons/weather/Dark/02n.png": __glob_1_3, "../assets/icons/weather/Dark/03d.png": __glob_1_4, "../assets/icons/weather/Dark/03n.png": __glob_1_5, "../assets/icons/weather/Dark/04d.png": __glob_1_6, "../assets/icons/weather/Dark/04n.png": __glob_1_7, "../assets/icons/weather/Dark/09d.png": __glob_1_8, "../assets/icons/weather/Dark/09n.png": __glob_1_9, "../assets/icons/weather/Dark/10d.png": __glob_1_10, "../assets/icons/weather/Dark/10n.png": __glob_1_11, "../assets/icons/weather/Dark/11d.png": __glob_1_12, "../assets/icons/weather/Dark/11n.png": __glob_1_13, "../assets/icons/weather/Dark/13d.png": __glob_1_14, "../assets/icons/weather/Dark/13n.png": __glob_1_15, "../assets/icons/weather/Dark/50d.png": __glob_1_16, "../assets/icons/weather/Dark/50n.png": __glob_1_17, "../assets/icons/weather/Dark/unknown.png": __glob_1_18, "../assets/icons/weather/Nord/01d.png": __glob_1_19, "../assets/icons/weather/Nord/01n.png": __glob_1_20, "../assets/icons/weather/Nord/02d.png": __glob_1_21, "../assets/icons/weather/Nord/02n.png": __glob_1_22, "../assets/icons/weather/Nord/03d.png": __glob_1_23, "../assets/icons/weather/Nord/03n.png": __glob_1_24, "../assets/icons/weather/Nord/04d.png": __glob_1_25, "../assets/icons/weather/Nord/04n.png": __glob_1_26, "../assets/icons/weather/Nord/09d.png": __glob_1_27, "../assets/icons/weather/Nord/09n.png": __glob_1_28, "../assets/icons/weather/Nord/10d.png": __glob_1_29, "../assets/icons/weather/Nord/10n.png": __glob_1_30, "../assets/icons/weather/Nord/11d.png": __glob_1_31, "../assets/icons/weather/Nord/11n.png": __glob_1_32, "../assets/icons/weather/Nord/13d.png": __glob_1_33, "../assets/icons/weather/Nord/13n.png": __glob_1_34, "../assets/icons/weather/Nord/50d.png": __glob_1_35, "../assets/icons/weather/Nord/50n.png": __glob_1_36, "../assets/icons/weather/Nord/unknown.png": __glob_1_37, "../assets/icons/weather/OneDark/01d.png": __glob_1_38, "../assets/icons/weather/OneDark/01n.png": __glob_1_39, "../assets/icons/weather/OneDark/02d.png": __glob_1_40, "../assets/icons/weather/OneDark/02n.png": __glob_1_41, "../assets/icons/weather/OneDark/03d.png": __glob_1_42, "../assets/icons/weather/OneDark/03n.png": __glob_1_43, "../assets/icons/weather/OneDark/04d.png": __glob_1_44, "../assets/icons/weather/OneDark/04n.png": __glob_1_45, "../assets/icons/weather/OneDark/09d.png": __glob_1_46, "../assets/icons/weather/OneDark/09n.png": __glob_1_47, "../assets/icons/weather/OneDark/10d.png": __glob_1_48, "../assets/icons/weather/OneDark/10n.png": __glob_1_49, "../assets/icons/weather/OneDark/11d.png": __glob_1_50, "../assets/icons/weather/OneDark/11n.png": __glob_1_51, "../assets/icons/weather/OneDark/13d.png": __glob_1_52, "../assets/icons/weather/OneDark/13n.png": __glob_1_53, "../assets/icons/weather/OneDark/50d.png": __glob_1_54, "../assets/icons/weather/OneDark/50n.png": __glob_1_55, "../assets/icons/weather/OneDark/unknown.png": __glob_1_56, "../assets/icons/weather/White/01d.png": __glob_1_57, "../assets/icons/weather/White/01n.png": __glob_1_58, "../assets/icons/weather/White/02d.png": __glob_1_59, "../assets/icons/weather/White/02n.png": __glob_1_60, "../assets/icons/weather/White/03d.png": __glob_1_61, "../assets/icons/weather/White/03n.png": __glob_1_62, "../assets/icons/weather/White/04d.png": __glob_1_63, "../assets/icons/weather/White/04n.png": __glob_1_64, "../assets/icons/weather/White/09d.png": __glob_1_65, "../assets/icons/weather/White/09n.png": __glob_1_66, "../assets/icons/weather/White/10d.png": __glob_1_67, "../assets/icons/weather/White/10n.png": __glob_1_68, "../assets/icons/weather/White/11d.png": __glob_1_69, "../assets/icons/weather/White/11n.png": __glob_1_70, "../assets/icons/weather/White/13d.png": __glob_1_71, "../assets/icons/weather/White/13n.png": __glob_1_72, "../assets/icons/weather/White/50d.png": __glob_1_73, "../assets/icons/weather/White/50n.png": __glob_1_74, "../assets/icons/weather/White/unknown.png": __glob_1_75, }[`../assets/icons/weather/${iconTheme}/${weather}.png`], self.location).href;
 };
 
 const _hoisted_1$7 = { class: "weather flex items-center justify-center" };
@@ -973,46 +973,46 @@ const _hoisted_7$1 = { class: "text-2xl font-sans ml-4 text-foreground dark:text
 const _sfc_main$7 = {
   setup(__props) {
 
-const icon = ref("unknown");
-const temp = ref("-");
-const description = ref("Unknown");
-onMounted(() => {
-  setWeather();
-});
+    const icon = ref("unknown");
+    const temp = ref("-");
+    const description = ref("Unknown");
+    onMounted(() => {
+      setWeather();
+    });
 
-const weather = ref(null); // the error here is a mistake. Node and Vue both support top level await.
+    const weather = ref(null); // the error here is a mistake. Node and Vue both support top level await.
 
-const setWeather = async () => {
-  weather.value = await weatherPromise;
-  temp.value = weather.value.temperature;
+    const setWeather = async () => {
+      weather.value = await weatherPromise;
+      temp.value = weather.value.temperature;
 
-  const words = weather.value.description.split(" ");
-  for (let i = 0; i < words.length; i++) {
-    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+      const words = weather.value.description.split(" ");
+      for (let i = 0; i < words.length; i++) {
+        words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+      }
+      let caps = words.join(" ");
+      description.value = caps;
+
+      icon.value = weather.value.icon;
+    };
+
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$7, [
+        createBaseVNode("div", _hoisted_2$3, [
+          createBaseVNode("img", {
+            class: "w-16 h-16",
+            src: unref(getIcon)(icon.value)
+          }, null, 8, _hoisted_3$1)
+        ]),
+        createBaseVNode("div", _hoisted_4$1, [
+          createBaseVNode("p", _hoisted_5$1, toDisplayString(temp.value) + "°", 1)
+        ]),
+        createBaseVNode("div", _hoisted_6$1, [
+          createBaseVNode("p", _hoisted_7$1, toDisplayString(description.value), 1)
+        ])
+      ]))
+    }
   }
-  let caps = words.join(" ");
-  description.value = caps;
-
-  icon.value = weather.value.icon;
-};
-
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$7, [
-    createBaseVNode("div", _hoisted_2$3, [
-      createBaseVNode("img", {
-        class: "w-16 h-16",
-        src: unref(getIcon)(icon.value)
-      }, null, 8, _hoisted_3$1)
-    ]),
-    createBaseVNode("div", _hoisted_4$1, [
-      createBaseVNode("p", _hoisted_5$1, toDisplayString(temp.value) + "°", 1)
-    ]),
-    createBaseVNode("div", _hoisted_6$1, [
-      createBaseVNode("p", _hoisted_7$1, toDisplayString(description.value), 1)
-    ])
-  ]))
-}
-}
 
 };
 
@@ -1022,43 +1022,43 @@ const _hoisted_2$2 = ["href", "target"];
 
 const _sfc_main$6 = {
   props: {
-  link: String,
-  id: String,
-  icon: String
-},
+    link: String,
+    id: String,
+    icon: String
+  },
   setup(__props) {
 
-const props = __props;
+    const props = __props;
 
 
 
-const prefixedIcon = () => {
-  if (props.icon.startsWith("fab-")) {
-    let fabless = props.icon.split("fab-")[1];
-    return [`fab`, fabless];
-  } else {
-    return props.icon;
+    const prefixedIcon = () => {
+      if (props.icon.startsWith("fab-")) {
+        let fabless = props.icon.split("fab-")[1];
+        return [`fab`, fabless];
+      } else {
+        return props.icon;
+      }
+    };
+
+    return (_ctx, _cache) => {
+      const _component_fa_icon = resolveComponent("fa-icon");
+
+      return (openBlock(), createElementBlock("div", _hoisted_1$6, [
+        (openBlock(), createElementBlock("a", {
+          key: props.id,
+          href: props.link,
+          target: unref(config).openInNewTab ? '_blank' : '',
+          class: normalizeClass(["card flex justify-center items-center w-full text-foreground dark:text-darkforeground hover:bg-accent dark:hover:bg-darkaccent", 'button__' + props.id])
+        }, [
+          createVNode(_component_fa_icon, {
+            icon: prefixedIcon(),
+            class: "h-[40%] w-5/12 transition-none"
+          }, null, 8, ["icon"])
+        ], 10, _hoisted_2$2))
+      ]))
+    }
   }
-};
-
-return (_ctx, _cache) => {
-  const _component_fa_icon = resolveComponent("fa-icon");
-
-  return (openBlock(), createElementBlock("div", _hoisted_1$6, [
-    (openBlock(), createElementBlock("a", {
-      key: props.id,
-      href: props.link,
-      target: unref(config).openInNewTab ? '_blank' : '',
-      class: normalizeClass(["card flex justify-center items-center w-full text-foreground dark:text-darkforeground hover:bg-accent dark:hover:bg-darkaccent", 'button__' + props.id])
-    }, [
-      createVNode(_component_fa_icon, {
-        icon: prefixedIcon(),
-        class: "h-[40%] w-5/12 transition-none"
-      }, null, 8, ["icon"])
-    ], 10, _hoisted_2$2))
-  ]))
-}
-}
 
 };
 
@@ -1068,25 +1068,25 @@ const _hoisted_1$5 = { class: "contents" };
 const _sfc_main$5 = {
   setup(__props) {
 
-const items = config.firstButtonsContainer;
+    const items = config.firstButtonsContainer;
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$5, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
-      return (openBlock(), createElementBlock("div", {
-        class: "contents",
-        key: item.id
-      }, [
-        createVNode(_sfc_main$6, {
-          id: item.id,
-          link: item.link,
-          icon: item.icon
-        }, null, 8, ["id", "link", "icon"])
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$5, [
+        (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
+          return (openBlock(), createElementBlock("div", {
+            class: "contents",
+            key: item.id
+          }, [
+            createVNode(_sfc_main$6, {
+              id: item.id,
+              link: item.link,
+              icon: item.icon
+            }, null, 8, ["id", "link", "icon"])
+          ]))
+        }), 128))
       ]))
-    }), 128))
-  ]))
-}
-}
+    }
+  }
 
 };
 
@@ -1096,25 +1096,25 @@ const _hoisted_1$4 = { class: "contents" };
 const _sfc_main$4 = {
   setup(__props) {
 
-const items = config.secondButtonsContainer;
+    const items = config.secondButtonsContainer;
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$4, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
-      return (openBlock(), createElementBlock("div", {
-        class: "contents",
-        key: item.id
-      }, [
-        createVNode(_sfc_main$6, {
-          id: item.id,
-          link: item.link,
-          icon: item.icon
-        }, null, 8, ["id", "link", "icon"])
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$4, [
+        (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
+          return (openBlock(), createElementBlock("div", {
+            class: "contents",
+            key: item.id
+          }, [
+            createVNode(_sfc_main$6, {
+              id: item.id,
+              link: item.link,
+              icon: item.icon
+            }, null, 8, ["id", "link", "icon"])
+          ]))
+        }), 128))
       ]))
-    }), 128))
-  ]))
-}
-}
+    }
+  }
 
 };
 
@@ -1124,43 +1124,43 @@ const _hoisted_2$1 = ["target", "href"];
 
 const _sfc_main$3 = {
   props: {
-  icon: String,
-  links: Array,
-},
+    icon: String,
+    links: Array,
+  },
   setup(__props) {
 
-const props = __props;
+    const props = __props;
 
 
 
-const prefixedIcon = () => {
-  if (props.icon.startsWith("fab-")) {
-    let fabless = props.icon.split("fab-")[1];
-    return [`fab`, fabless];
-  } else {
-    return props.icon;
+    const prefixedIcon = () => {
+      if (props.icon.startsWith("fab-")) {
+        let fabless = props.icon.split("fab-")[1];
+        return [`fab`, fabless];
+      } else {
+        return props.icon;
+      }
+    };
+
+    return (_ctx, _cache) => {
+      const _component_fa_icon = resolveComponent("fa-icon");
+
+      return (openBlock(), createElementBlock("div", _hoisted_1$3, [
+        createVNode(_component_fa_icon, {
+          class: "mt-12 listIcon h-8 w-8 my-4 grow text-foreground dark:text-darkforeground justify-self-start content-start basis-10",
+          icon: prefixedIcon()
+        }, null, 8, ["icon"]),
+        (openBlock(true), createElementBlock(Fragment, null, renderList(__props.links, (link, index) => {
+          return (openBlock(), createElementBlock("a", {
+            key: index,
+            target: unref(config).openInNewTab ? '_blank' : '',
+            href: link.link,
+            class: "listItem text-center justify-center rounded-md font-bold text-foreground text-2xl dark:text-darkforeground hover:bg-accent dark:hover:bg-darkaccent grow flex mb-8 items-center"
+          }, toDisplayString(link.name), 9, _hoisted_2$1))
+        }), 128))
+      ]))
+    }
   }
-};
-
-return (_ctx, _cache) => {
-  const _component_fa_icon = resolveComponent("fa-icon");
-
-  return (openBlock(), createElementBlock("div", _hoisted_1$3, [
-    createVNode(_component_fa_icon, {
-      class: "mt-12 listIcon h-8 w-8 my-4 grow text-foreground dark:text-darkforeground justify-self-start content-start basis-10",
-      icon: prefixedIcon()
-    }, null, 8, ["icon"]),
-    (openBlock(true), createElementBlock(Fragment, null, renderList(__props.links, (link, index) => {
-      return (openBlock(), createElementBlock("a", {
-        key: index,
-        target: unref(config).openInNewTab ? '_blank' : '',
-        href: link.link,
-        class: "listItem text-center justify-center rounded-md font-bold text-foreground text-2xl dark:text-darkforeground hover:bg-accent dark:hover:bg-darkaccent grow flex mb-8 items-center"
-      }, toDisplayString(link.name), 9, _hoisted_2$1))
-    }), 128))
-  ]))
-}
-}
 
 };
 
@@ -1170,25 +1170,25 @@ const _hoisted_1$2 = { class: "contents" };
 const _sfc_main$2 = {
   setup(__props) {
 
-const items = config.firstlistsContainer;
+    const items = config.firstlistsContainer;
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$2, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
-      return (openBlock(), createElementBlock("div", {
-        key: item.id,
-        class: normalizeClass([`list__${item.id}`, "flex items-center justify-center flex-col card shadow-md hover:shadow-xl shadow-gray-400/75 dark:shadow-black/40"])
-      }, [
-        createVNode(_sfc_main$3, {
-          class: "",
-          icon: item.icon,
-          links: item.links
-        }, null, 8, ["icon", "links"])
-      ], 2))
-    }), 128))
-  ]))
-}
-}
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$2, [
+        (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
+          return (openBlock(), createElementBlock("div", {
+            key: item.id,
+            class: normalizeClass([`list__${item.id}`, "flex items-center justify-center flex-col card shadow-md hover:shadow-xl shadow-gray-400/75 dark:shadow-black/40"])
+          }, [
+            createVNode(_sfc_main$3, {
+              class: "",
+              icon: item.icon,
+              links: item.links
+            }, null, 8, ["icon", "links"])
+          ], 2))
+        }), 128))
+      ]))
+    }
+  }
 
 };
 
@@ -1198,25 +1198,25 @@ const _hoisted_1$1 = { class: "contents" };
 const _sfc_main$1 = {
   setup(__props) {
 
-const items = config.secondListsContainer;
+    const items = config.secondListsContainer;
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", _hoisted_1$1, [
-    (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
-      return (openBlock(), createElementBlock("div", {
-        key: item.id,
-        class: normalizeClass([`list__${item.id}`, "flex items-center justify-center flex-col card shadow-md hover:shadow-xl shadow-gray-400/75 dark:shadow-black/40"])
-      }, [
-        createVNode(_sfc_main$3, {
-          class: "",
-          icon: item.icon,
-          links: item.links
-        }, null, 8, ["icon", "links"])
-      ], 2))
-    }), 128))
-  ]))
-}
-}
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", _hoisted_1$1, [
+        (openBlock(true), createElementBlock(Fragment, null, renderList(unref(items), (item) => {
+          return (openBlock(), createElementBlock("div", {
+            key: item.id,
+            class: normalizeClass([`list__${item.id}`, "flex items-center justify-center flex-col card shadow-md hover:shadow-xl shadow-gray-400/75 dark:shadow-black/40"])
+          }, [
+            createVNode(_sfc_main$3, {
+              class: "",
+              icon: item.icon,
+              links: item.links
+            }, null, 8, ["icon", "links"])
+          ], 2))
+        }), 128))
+      ]))
+    }
+  }
 
 };
 
@@ -1266,68 +1266,68 @@ const _sfc_main = {
   setup(__props) {
 
 
-return (_ctx, _cache) => {
-  return (openBlock(), createElementBlock("div", {
-    class: normalizeClass(["bg-background dark:bg-darkbackground w-screen h-screen", unref(config).imageBackground ? 'backgroundImage bg-transparent dark:bg-transparent' : ''])
-  }, [
-    createBaseVNode("div", {
-      id: "app",
-      class: normalizeClass(["flex w-4/5 h-screen justify-center mx-auto bg-background dark:bg-darkbackground transition-all ease-in-out duration-150", unref(config).imageBackground ? 'bg-transparent dark:bg-transparent' : ''])
-    }, [
-      createVNode(_sfc_main$b),
-      createVNode(SearchBar),
-      createBaseVNode("div", _hoisted_1, [
-        createBaseVNode("div", _hoisted_2, [
-          createVNode(_sfc_main$a),
-          createVNode(_sfc_main$9)
-        ]),
-        createBaseVNode("div", _hoisted_3, [
-          createBaseVNode("div", _hoisted_4, [
-            createVNode(_sfc_main$8)
-          ]),
-          (openBlock(), createBlock(Suspense, null, {
-            default: withCtx(() => [
-              createVNode(_sfc_main$7)
+    return (_ctx, _cache) => {
+      return (openBlock(), createElementBlock("div", {
+        class: normalizeClass(["bg-background dark:bg-darkbackground w-screen h-screen", unref(config).imageBackground ? 'backgroundImage bg-transparent dark:bg-transparent' : ''])
+      }, [
+        createBaseVNode("div", {
+          id: "app",
+          class: normalizeClass(["flex w-4/5 h-screen justify-center mx-auto bg-background dark:bg-darkbackground transition-all ease-in-out duration-150", unref(config).imageBackground ? 'bg-transparent dark:bg-transparent' : ''])
+        }, [
+          createVNode(_sfc_main$b),
+          createVNode(SearchBar),
+          createBaseVNode("div", _hoisted_1, [
+            createBaseVNode("div", _hoisted_2, [
+              createVNode(_sfc_main$a),
+              createVNode(_sfc_main$9)
             ]),
-            _: 1
-          }))
-        ]),
-        createBaseVNode("div", _hoisted_5, [
-          createBaseVNode("div", _hoisted_6, [
-            (unref(config).bentoLayout == 'bento' || unref(config).bentoLayout == 'buttons')
-              ? (openBlock(), createElementBlock("div", _hoisted_7, [
-                  createVNode(_sfc_main$5)
-                ]))
-              : createCommentVNode("", true),
-            (unref(config).bentoLayout == 'lists')
-              ? (openBlock(), createElementBlock("div", _hoisted_8, [
-                  createVNode(_sfc_main$2)
-                ]))
-              : createCommentVNode("", true)
-          ]),
-          createBaseVNode("div", _hoisted_9, [
-            (unref(config).bentoLayout == 'bento')
-              ? (openBlock(), createElementBlock("div", _hoisted_10, [
-                  createVNode(_sfc_main$2)
-                ]))
-              : createCommentVNode("", true),
-            (unref(config).bentoLayout == 'lists')
-              ? (openBlock(), createElementBlock("div", _hoisted_11, [
-                  createVNode(_sfc_main$1)
-                ]))
-              : createCommentVNode("", true),
-            (unref(config).bentoLayout == 'buttons')
-              ? (openBlock(), createElementBlock("div", _hoisted_12, [
-                  createVNode(_sfc_main$4)
-                ]))
-              : createCommentVNode("", true)
+            createBaseVNode("div", _hoisted_3, [
+              createBaseVNode("div", _hoisted_4, [
+                createVNode(_sfc_main$8)
+              ]),
+              (openBlock(), createBlock(Suspense, null, {
+                default: withCtx(() => [
+                  createVNode(_sfc_main$7)
+                ]),
+                _: 1
+              }))
+            ]),
+            createBaseVNode("div", _hoisted_5, [
+              createBaseVNode("div", _hoisted_6, [
+                (unref(config).bentoLayout == 'bento' || unref(config).bentoLayout == 'buttons')
+                  ? (openBlock(), createElementBlock("div", _hoisted_7, [
+                    createVNode(_sfc_main$5)
+                  ]))
+                  : createCommentVNode("", true),
+                (unref(config).bentoLayout == 'lists')
+                  ? (openBlock(), createElementBlock("div", _hoisted_8, [
+                    createVNode(_sfc_main$2)
+                  ]))
+                  : createCommentVNode("", true)
+              ]),
+              createBaseVNode("div", _hoisted_9, [
+                (unref(config).bentoLayout == 'bento')
+                  ? (openBlock(), createElementBlock("div", _hoisted_10, [
+                    createVNode(_sfc_main$2)
+                  ]))
+                  : createCommentVNode("", true),
+                (unref(config).bentoLayout == 'lists')
+                  ? (openBlock(), createElementBlock("div", _hoisted_11, [
+                    createVNode(_sfc_main$1)
+                  ]))
+                  : createCommentVNode("", true),
+                (unref(config).bentoLayout == 'buttons')
+                  ? (openBlock(), createElementBlock("div", _hoisted_12, [
+                    createVNode(_sfc_main$4)
+                  ]))
+                  : createCommentVNode("", true)
+              ])
+            ])
           ])
-        ])
-      ])
-    ], 2)
-  ], 2))
-}
-}
+        ], 2)
+      ], 2))
+    }
+  }
 
 };
 
