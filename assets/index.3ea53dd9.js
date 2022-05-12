@@ -129,7 +129,7 @@ const CONFIG = {
   searchEngine: "google", // google, ddg
   barStyle: "bento", // bento, minimal, boxy, rounded
   barPlaceholder: "", // if blank, use search engine name. Set to ' ' for no placeholder.
-  autoFocusBar: true,
+  autoFocusBar: false,
 
   // Greetings
   greetingMorning: "Good morning,",
@@ -271,7 +271,7 @@ function __variableDynamicImportRuntime1__(path) {
     case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/sakura.ae322a50.css"] : void 0);
     case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/solarized.c538012f.css"] : void 0);
     case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/summer.e2b75cc6.css"] : void 0);
-    default: return new Promise(function (resolve, reject) {
+    default: return new Promise(function(resolve, reject) {
       (typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout)(
         reject.bind(null, new Error("Unknown variable dynamic import: " + path))
       );
@@ -290,7 +290,7 @@ function __variableDynamicImportRuntime0__(path) {
     case './src/assets/css/themes/sakura.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/sakura.ae322a50.css"] : void 0);
     case './src/assets/css/themes/solarized.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/solarized.c538012f.css"] : void 0);
     case './src/assets/css/themes/summer.css': return __vitePreload(() => Promise.resolve({}), true ? ["assets/summer.e2b75cc6.css"] : void 0);
-    default: return new Promise(function (resolve, reject) {
+    default: return new Promise(function(resolve, reject) {
       (typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout)(
         reject.bind(null, new Error("Unknown variable dynamic import: " + path))
       );
